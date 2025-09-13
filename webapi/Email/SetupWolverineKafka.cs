@@ -8,7 +8,10 @@ public static class SetupWolverineKafkaExtensions
     {
         host.UseWolverine(opts =>
         {
-            opts.UseKafka(Environment.GetEnvironmentVariable("ConnectionStrings__kafka") ?? "")
+            opts.UseKafka(
+                    Environment.GetEnvironmentVariable("services__kafka__kafka__0")
+                        ?? ""
+                )
                 .AutoProvision();
 
             opts.PublishAllMessages().ToKafkaTopics();
@@ -21,7 +24,9 @@ public static class SetupWolverineKafkaExtensions
 
             opts.Discovery.IncludeAssembly(typeof(EmailReceivedConsumer).Assembly);
 
-            Console.WriteLine(opts.DescribeHandlerMatch(typeof(EmailReceivedConsumer)));
+            Console.WriteLine(
+                opts.DescribeHandlerMatch(typeof(EmailReceivedConsumer))
+            );
             Console.WriteLine("Wolverine with Kafka is configured.");
         });
     }
