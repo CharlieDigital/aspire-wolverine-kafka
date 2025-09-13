@@ -5,8 +5,10 @@ namespace webapi.Controllers;
 
 [ApiController]
 [Route("email")]
-public class EmailController(ILogger<EmailController> logger, IMessageBus bus) : ControllerBase
+public class EmailController(ILogger<EmailController> logger, IMessageBus bus)
+    : ControllerBase
 {
+    // Sample of a publisher
     [HttpPost("send")]
     public async Task Send()
     {
