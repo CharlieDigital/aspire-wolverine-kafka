@@ -24,7 +24,10 @@ public class EmailController(ILogger<EmailController> logger, IMessageBus bus)
             Body = "This is a test email."
         };
 
-        await bus.PublishAsync(email);
+        await bus.PublishAsync(
+            email,
+            new DeliveryOptions { PartitionKey = email.To }
+        );
 
         logger.LogInformation("Test email sent.");
     }

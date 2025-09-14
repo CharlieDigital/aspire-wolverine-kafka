@@ -27,6 +27,7 @@ public static class SetupWolverineKafkaExtensions
             Console.WriteLine(
                 opts.DescribeHandlerMatch(typeof(EmailReceivedConsumer))
             );
+
             Console.WriteLine("Wolverine with Kafka is configured.");
         });
     }
