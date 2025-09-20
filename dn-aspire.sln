@@ -8,6 +8,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dn-aspire.ServiceDefaults",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "webapi", "webapi\webapi.csproj", "{FD5C5AF4-F121-453C-B8ED-7FE973A13100}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "webapi-brighter", "webapi-brighter\webapi-brighter.csproj", "{079596A8-0287-4E80-BA76-B6834FD26770}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +28,10 @@ Global
 		{FD5C5AF4-F121-453C-B8ED-7FE973A13100}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD5C5AF4-F121-453C-B8ED-7FE973A13100}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD5C5AF4-F121-453C-B8ED-7FE973A13100}.Release|Any CPU.Build.0 = Release|Any CPU
+		{079596A8-0287-4E80-BA76-B6834FD26770}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{079596A8-0287-4E80-BA76-B6834FD26770}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{079596A8-0287-4E80-BA76-B6834FD26770}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{079596A8-0287-4E80-BA76-B6834FD26770}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

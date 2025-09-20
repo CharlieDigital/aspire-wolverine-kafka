@@ -44,7 +44,9 @@ public static class SetupBrighterKafkaExtensions
 
         var db = new RelationalDatabaseConfiguration(
             connectionString,
-            "brightertests"
+            "brightertests",
+            outBoxTableName: "outboxmessages",
+            inboxTableName: "inboxmessages"
         );
 
         var outbox = new PostgreSqlOutbox(db);
@@ -52,11 +54,11 @@ public static class SetupBrighterKafkaExtensions
 
         services
             .AddHostedService<ServiceActivatorHostedService>()
-            .AddSingleton<IAmARelationalDatabaseConfiguration>(db)
-            .AddSingleton<IAmAnOutbox>(outbox)
+            // .AddSingleton<IAmARelationalDatabaseConfiguration>(db)
+            // .AddSingleton<IAmAnOutbox>(outbox)
             .AddConsumers(options =>
             {
-                options.InboxConfiguration = new InboxConfiguration(inbox);
+                // options.InboxConfiguration = new InboxConfiguration(inbox);
 
                 options.Subscriptions =
                 [
@@ -74,17 +76,19 @@ public static class SetupBrighterKafkaExtensions
             .AutoFromAssemblies([Assembly.GetExecutingAssembly()])
             .AddProducers(options =>
             {
-                options.Outbox = outbox;
+                // options.ConnectionProvider = typeof(PostgreSqlTransactionProvider);
+                // options.TransactionProvider = typeof(PostgreSqlTransactionProvider);
+                // options.Outbox = outbox;
                 options.ProducerRegistry = kafka;
-            })
-            .UseOutboxSweeper(options =>
-            {
-                options.BatchSize = 10;
-            })
-            .UseOutboxArchiver<DbTransaction>(
-                new NullOutboxArchiveProvider(),
-                opt => opt.MinimumAge = TimeSpan.FromMinutes(1)
-            );
+            });
+        // .UseOutboxSweeper(options =>
+        // {
+        //     options.BatchSize = 10;
+        // })
+        // .UseOutboxArchiver<DbTransaction>(
+        //     new NullOutboxArchiveProvider(),
+        //     opt => opt.MinimumAge = TimeSpan.FromMinutes(1)
+        // );
 
         return services;
     }

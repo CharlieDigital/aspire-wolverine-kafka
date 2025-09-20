@@ -9,8 +9,24 @@ builder.Services.AddBrighterWithKafka().AddControllers();
 string connectionString =
     Environment.GetEnvironmentVariable("ConnectionStrings__webapipg") ?? "";
 
-await using (NpgsqlConnection connection = new(connectionString))
+try
 {
+    await SetupPgAsync();
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"Error setting up Postgres: {ex.Message}");
+}
+
+var app = builder.Build();
+
+app.MapControllers();
+
+app.Run();
+
+async Task SetupPgAsync()
+{
+    await using NpgsqlConnection connection = new(connectionString);
     await connection.OpenAsync();
     await using var inboxCommand = connection.CreateCommand();
     inboxCommand.CommandText = """
@@ -57,9 +73,3 @@ await using (NpgsqlConnection connection = new(connectionString))
 
     _ = await outboxCommand.ExecuteNonQueryAsync();
 }
-
-var app = builder.Build();
-
-app.MapControllers();
-
-app.Run();

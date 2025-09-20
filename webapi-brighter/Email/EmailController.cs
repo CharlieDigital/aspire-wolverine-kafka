@@ -26,7 +26,7 @@ public class EmailController(
             Body = "This is a test email."
         };
 
-        await bus.DepositPostAsync(email);
+        await bus.PostAsync(email);
 
         logger.LogInformation("Test email sent.");
     }
@@ -47,7 +47,7 @@ public class EmailController(
             Body = "This is a test email."
         };
 
-        await bus.DepositPostAsync(email);
+        await bus.PostAsync(email);
 
         logger.LogInformation("Test email sent.");
     }

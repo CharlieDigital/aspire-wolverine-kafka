@@ -12,7 +12,7 @@ var postgres = builder.AddPostgres("aspirepg").WithPgWeb().AddDatabase("webapipg
 // this sets the "ConnectionStrings__kafka" environment variable
 // for the web application process started by Aspire
 var api = builder
-    .AddProject<Projects.webapi>("api")
+    .AddProject<Projects.webapi_brighter>("api")
     .WaitFor(kafka)
     .WaitFor(postgres)
     .WithReplicas(2)

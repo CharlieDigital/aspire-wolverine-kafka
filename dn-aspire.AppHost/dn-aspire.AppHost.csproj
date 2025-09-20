@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="../webapi/webapi.csproj" />
+    <ProjectReference Include="..\webapi-brighter\webapi-brighter.csproj" />
   </ItemGroup>
 
 </Project>
