@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>webapi_brighter</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
+    <PackageReference Include="Npgsql" Version="9.0.3" />
+    <PackageReference Include="paramore.brighter" Version="10.0.0-preview.9" />
+    <PackageReference Include="Paramore.Brighter.Extensions.DependencyInjection" Version="10.0.0-preview.9" />
+    <PackageReference Include="Paramore.Brighter.Inbox.Postgres" Version="10.0.0-preview.9" />
+    <PackageReference Include="Paramore.Brighter.MessagingGateway.Kafka" Version="10.0.0-preview.9" />
+    <PackageReference Include="Paramore.Brighter.Outbox.Hosting" Version="10.0.0-preview.9" />
+    <PackageReference Include="Paramore.Brighter.Outbox.PostgreSql" Version="10.0.0-preview.9" />
+    <PackageReference Include="Paramore.Brighter.PostgreSql" Version="10.0.0-preview.9" />
+    <PackageReference Include="Paramore.Brighter.ServiceActivator.Extensions.DependencyInjection" Version="10.0.0-preview.9" />
+    <PackageReference Include="Paramore.Brighter.ServiceActivator.Extensions.Hosting" Version="10.0.0-preview.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\dn-aspire.ServiceDefaults\dn-aspire.ServiceDefaults.csproj" />
+  </ItemGroup>
+
+</Project>
