@@ -28,4 +28,25 @@ public class EmailController(ILogger<EmailController> logger, IMessageBus bus)
 
         logger.LogInformation("Test email sent.");
     }
+
+    // Sample of a publisher
+    [HttpPost("error")]
+    public async Task SendError()
+    {
+        var messageId = Random.Shared.Next(1000, 9999);
+
+        logger.LogInformation("Sending test email...{MessageId}", messageId);
+
+        var email = new EmailReceivedModel
+        {
+            To = "<recipient@example.com>",
+            From = "<sender@example.com>",
+            Subject = $"Test Email {messageId} (error)",
+            Body = "This is a test email."
+        };
+
+        await bus.PublishAsync(email);
+
+        logger.LogInformation("Test email sent.");
+    }
 }

@@ -3,19 +3,33 @@ using Wolverine.Attributes;
 
 // Sample of a consumer.  Wolverine has a set of heuristics for discovery
 [WolverineHandler]
-public class EmailReceivedConsumer
+public class AnotherEmailReceivedConsumer(
+    ILogger<AnotherEmailReceivedConsumer> logger
+)
 {
-    private readonly ILogger<EmailReceivedConsumer> _logger;
-
-    public EmailReceivedConsumer(ILogger<EmailReceivedConsumer> logger)
-    {
-        _logger = logger;
-    }
-
     public void Handle(EmailReceivedModel email)
     {
-        _logger.LogInformation(
-            "Received email: {Email}",
+        logger.LogInformation(
+            "<< RECEIVED EMAIL (2) >>: {Email}",
+            JsonSerializer.Serialize(email)
+        );
+    }
+}
+
+// Sample of a consumer.  Wolverine has a set of heuristics for discovery
+[WolverineHandler]
+public class EmailReceivedConsumer(ILogger<EmailReceivedConsumer> logger)
+{
+    [RequeueOn(typeof(Exception), 2)]
+    public void Handle(EmailReceivedModel email)
+    {
+        if (email.Subject.Contains("error"))
+        {
+            throw new Exception("Simulated exception");
+        }
+
+        logger.LogInformation(
+            "<< RECEIVED EMAIL >>: {Email}",
             JsonSerializer.Serialize(email)
         );
     }
