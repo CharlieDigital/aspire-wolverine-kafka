@@ -33,7 +33,7 @@ public static class SetupBrighterKafkaExtensions
             },
             [
                 // TODO: Create one for each publish topic.
-                new KafkaPublication
+                new KafkaPublication<EmailReceivedModel>
                 {
                     MakeChannels = OnMissingChannel.Create,
                     Source = new Uri("aspire-kafka", UriKind.RelativeOrAbsolute),
@@ -54,8 +54,8 @@ public static class SetupBrighterKafkaExtensions
 
         services
             .AddHostedService<ServiceActivatorHostedService>()
-            // .AddSingleton<IAmARelationalDatabaseConfiguration>(db)
-            // .AddSingleton<IAmAnOutbox>(outbox)
+            .AddSingleton<IAmARelationalDatabaseConfiguration>(db)
+            .AddSingleton<IAmAnOutbox>(outbox)
             .AddConsumers(options =>
             {
                 // options.InboxConfiguration = new InboxConfiguration(inbox);
@@ -74,21 +74,26 @@ public static class SetupBrighterKafkaExtensions
                 ];
             })
             .AutoFromAssemblies([Assembly.GetExecutingAssembly()])
+            .MapperRegistry(registry =>
+                registry.SetDefaultMessageMapper(
+                    typeof(CloudEventJsonMessageMapper<>)
+                )
+            )
             .AddProducers(options =>
             {
-                // options.ConnectionProvider = typeof(PostgreSqlTransactionProvider);
-                // options.TransactionProvider = typeof(PostgreSqlTransactionProvider);
-                // options.Outbox = outbox;
+                options.ConnectionProvider = typeof(PostgreSqlTransactionProvider);
+                options.TransactionProvider = typeof(PostgreSqlTransactionProvider);
+                options.Outbox = outbox;
                 options.ProducerRegistry = kafka;
-            });
-        // .UseOutboxSweeper(options =>
-        // {
-        //     options.BatchSize = 10;
-        // })
-        // .UseOutboxArchiver<DbTransaction>(
-        //     new NullOutboxArchiveProvider(),
-        //     opt => opt.MinimumAge = TimeSpan.FromMinutes(1)
-        // );
+            })
+            .UseOutboxSweeper(options =>
+            {
+                options.BatchSize = 10;
+            })
+            .UseOutboxArchiver<DbTransaction>(
+                new NullOutboxArchiveProvider(),
+                opt => opt.MinimumAge = TimeSpan.FromMinutes(1)
+            );
 
         return services;
     }
