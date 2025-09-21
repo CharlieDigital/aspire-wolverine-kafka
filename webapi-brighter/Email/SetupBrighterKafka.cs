@@ -65,7 +65,7 @@ public static class SetupBrighterKafkaExtensions
                     // TODO: Auto generate one for each consumer
                     new KafkaSubscription<EmailReceivedModel>(
                         new SubscriptionName("email.topic.sub"),
-                        new ChannelName("email"),
+                        new ChannelName("email.topic"),
                         new RoutingKey("email.topic"),
                         groupId: "email-consumer",
                         makeChannels: OnMissingChannel.Create,
