@@ -20,17 +20,18 @@ public static class SetupBrighterKafkaExtensions
         this IServiceCollection services
     )
     {
+        var kafkaConfig = new KafkaMessagingGatewayConfiguration
+        {
+            Name = "brighter-kafka",
+            BootStrapServers =
+            [
+                Environment.GetEnvironmentVariable("ConnectionStrings__kafka") ?? ""
+            ],
+            SecurityProtocol = SecurityProtocol.Plaintext
+        };
+
         var kafka = new KafkaProducerRegistryFactory(
-            new KafkaMessagingGatewayConfiguration
-            {
-                Name = "brighter-kafka",
-                BootStrapServers =
-                [
-                    Environment.GetEnvironmentVariable("ConnectionStrings__kafka")
-                        ?? ""
-                ],
-                SecurityProtocol = SecurityProtocol.Plaintext
-            },
+            kafkaConfig,
             [
                 // TODO: Create one for each publish topic.
                 new KafkaPublication<EmailReceivedModel>
@@ -69,9 +70,13 @@ public static class SetupBrighterKafkaExtensions
                         new RoutingKey("email.topic"),
                         groupId: "email-consumer",
                         makeChannels: OnMissingChannel.Create,
-                        messagePumpType: MessagePumpType.Reactor
+                        messagePumpType: MessagePumpType.Proactor
                     )
                 ];
+
+                options.DefaultChannelFactory = new ChannelFactory(
+                    new KafkaMessageConsumerFactory(kafkaConfig)
+                );
             })
             .AutoFromAssemblies([Assembly.GetExecutingAssembly()])
             .MapperRegistry(registry =>
